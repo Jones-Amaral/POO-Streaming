@@ -17,7 +17,7 @@ A aplicação permite cadastrar, organizar e consultar conteúdos audiovisuais,
 com suporte a múltiplos perfis de usuário, listas de favoritos e
 organização por categorias.
 
-Os dados são persistidos em formato JSON.
+Os dados são persistidos em formato TXT.
 
 ## Principais funcionalidades
 
