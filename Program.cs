@@ -83,6 +83,23 @@ class Program
 {
     static void Main()
     {
+        // Criando temporada
+        Temporada temporada1 = new Temporada();
+        temporada1.CriarTemporada(1);
 
+        // Criando episódios
+        Episodio ep1 = new Episodio();
+        ep1.CriarEpisodio(1, 45, "Piloto", "João Silva");
+
+        Episodio ep2 = new Episodio();
+        ep2.CriarEpisodio(2, 50, "O Retorno", "Maria Santos");
+
+        // Adicionando episódios na temporada
+        temporada1.AdicionarEp(ep1);
+        temporada1.AdicionarEp(ep2);
+
+        // Listando episódios
+        Console.WriteLine("=== TESTE TEMPORADA ===");
+        temporada1.ListarEpisodios();
     }
 }
