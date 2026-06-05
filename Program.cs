@@ -1,4 +1,4 @@
-﻿abstract class Conteudo
+﻿public abstract class Conteudo
 {
     public int notaConteudo;
     public int id;
@@ -6,77 +6,71 @@
     public string anoLancamento;
     public string titulo;
     public string sinopse;
-    public virtual void Reproduzir();
-    public virtual void ExibirDetalhes();
+    public abstract void Reproduzir();
+    public abstract void ExibirDetalhes();
 }
 
-class Filmes : Conteudo
+public class Filmes : Conteudo
 {
-    public int duracaoMinutor;
+    public int duracaoMinutos;
     public string diretor;
-    public override void Reproduzir();
-    public override void ExibirDetalhes();
+    public override void Reproduzir()
+    {
+        Console.WriteLine($"Reproduzindo filme: {titulo}");
+    }
+    public override void ExibirDetalhes()
+    {
+        Console.WriteLine($"{titulo} ({anoLancamento}) - {duracaoMinutos} min - Diretor: {diretor}");
+    }
 }
 
-class Series : Conteudo
+public class Series : Conteudo
 {
     public int duracaoEp;
     public int numTemp;
-    public List<Temporada> temporadas;
-    public override void Reproduzir();
-    public override void ExibirDetalhes();
+    public List<Temporada> temporadas = new List<Temporada>();
+    public override void Reproduzir()
+    {
+        Console.WriteLine($"Reproduzindo série: {titulo}");
+    }
+    public override void ExibirDetalhes()
+    {
+        Console.WriteLine($"{titulo} ({anoLancamento}) - {numTemp} temporada(s)");
+    }
 }
 
-class Temporada
+public class Catalogo
 {
-    public List<Episodios> listaEps; // Composição
-    public int numTem;
-    public void CriarTemporada(int numTemp);
-}
-
-class Episodio
-{
-    public int numEp;
-    public string tituloEp;
-    public int duracaoEp;
-    public string diretorEp;
-    public void CriarEp(int numEp, int duracaoEp, string tituloEp, string diretorEp);
-}
-
-class Usuario
-{
-    protected string nome;
-    protected string dataNasc;
-    protected string email;
-    protected string senha;
-    public void CriarPerfil(string nomePerfil);
-    public List<Perfil> listaPerfis; // Composição
-}
-
-class Perfil
-{
-    public string nome;
-    public string avatar;
-    public Lista<Conteudo> listaFavoritos;// Agregação
-    public void AdicionarFavorito(Conteudo x) { }
-}
-
-class Catalogo
-{
-    public List<Series> listaSeries; // Composição
-    public Lista<Filmes> listaFilmes; // Composição
-    public void ListarFilmes();
-    public void ListarSeries();
-    public void AdicionarFilme(int id, int nota, int classif, int ano, string titulo, string sinopse, int duração, string diretor);
-    public void AdicionarSerie(int id, int nota, int classif, int ano, string titulo, string sinopse, int duracaoEp, int numTemp);
-}
-
-class Categoria
-{
-    public string nomeCategoria;
-    public Lista<Conteudo> conteudos; // Agregação
-    public void AdicionarCategoria(string nomeCategoria);
-    public void ListarCategoria();
+    public List<Series> listaSeries = new List<Series>();
+    public List<Filmes> listaFilmes = new List<Filmes>();
+    public void ListarFilmes()
+    {
+        foreach (Filmes f in listaFilmes)
+            f.ExibirDetalhes();
+    }
+    public void ListarSeries()
+    {
+        foreach (Series s in listaSeries)
+            s.ExibirDetalhes();
+    }
+    public void AdicionarFilme(int id, int nota, int classif, string ano, string titulo, string sinopse, int duracao, string diretor)
+    {
+        Filmes f = new Filmes();
+        f.id = id; f.notaConteudo = nota; f.classificacaoInd = classif;
+        f.anoLancamento = ano; f.titulo = titulo; f.sinopse = sinopse;
+        f.duracaoMinutos = duracao; f.diretor = diretor;
+        listaFilmes.Add(f);
+        Console.WriteLine($"Filme '{titulo}' adicionado ao catálogo.");
+    }
+    public void AdicionarSerie(int id, int nota, int classif, string ano, string titulo, string sinopse, int duracaoEp, int numTemp)
+    {
+        Series s = new Series();
+        s.id = id; s.notaConteudo = nota; s.classificacaoInd = classif;
+        s.anoLancamento = ano; s.titulo = titulo; s.sinopse = sinopse;
+        s.duracaoEp = duracaoEp; s.numTemp = numTemp;
+        listaSeries.Add(s);
+        Console.WriteLine($"Série '{titulo}' adicionada ao catálogo.");
+    }
 }
 
 class Program
@@ -101,5 +95,44 @@ class Program
         // Listando episódios
         Console.WriteLine("=== TESTE TEMPORADA ===");
         temporada1.ListarEpisodios();
+
+        // Criando usuario
+        Console.WriteLine("\n=== TESTE USUARIO E PERFIL ===");
+        Usuario usuario1 = new Usuario("Ana", "01/01/2000", "ana@email.com", "senha123");
+
+        // Criando perfis
+        usuario1.CriarPerfil("Ana");
+        usuario1.CriarPerfil("Familia");
+        usuario1.ListarPerfis();
+
+        // Pegando o primeiro perfil e testando favoritos
+        List<Perfil> perfis = usuario1.GetListaPerfis();
+        Perfil meuPerfil = perfis[0];
+
+        // Criando um filme para adicionar nos favoritos
+        Filmes filme1 = new Filmes();
+        filme1.id = 1;
+        filme1.titulo = "Interestelar";
+        filme1.anoLancamento = "2014";
+        filme1.duracaoMinutos = 169;
+        filme1.diretor = "Christopher Nolan";
+
+        // Testando favoritos
+        meuPerfil.AdicionarFavorito(filme1);
+        meuPerfil.AdicionarFavorito(filme1); // testa duplicata
+        meuPerfil.ListarFavoritos();
+
+        Console.WriteLine("\n=== TESTE LISTAS DO PERFIL ===");
+
+        Filmes filme2 = new Filmes();
+        filme2.id = 2;
+        filme2.titulo = "Inception";
+        filme2.anoLancamento = "2010";
+        filme2.duracaoMinutos = 148;
+        filme2.diretor = "Christopher Nolan";
+
+        meuPerfil.AdicionarAssistido(filme1);
+        meuPerfil.AdicionarQueroAssistir(filme2);
+        meuPerfil.ExibirTodasAsListas();
     }
 }
