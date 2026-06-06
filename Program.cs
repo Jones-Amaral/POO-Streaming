@@ -127,43 +127,61 @@ class Program
 
         ficcao.ListarCategoria();
 
-        // Criando usuario
         Console.WriteLine("\n=== TESTE USUARIO E PERFIL ===");
+
+        // Teste de senha curta (deve lancar excecao)
+        try
+        {
+            Usuario usuarioInvalido = new Usuario("Teste", "01/01/2000", "teste@email.com", "123");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Erro esperado: {e.Message}");
+        }
+
+        // Criando usuario valido
         Usuario usuario1 = new Usuario("Ana", "01/01/2000", "ana@email.com", "senha123");
+        Console.WriteLine($"Usuario criado: {usuario1.nome}");
 
         // Criando perfis
         usuario1.CriarPerfil("Ana");
         usuario1.CriarPerfil("Familia");
         usuario1.ListarPerfis();
 
-        // Pegando o primeiro perfil e testando favoritos
+        // Pegando o primeiro perfil
         List<Perfil> perfis = usuario1.GetListaPerfis();
         Perfil meuPerfil = perfis[0];
 
-        // Criando um filme para adicionar nos favoritos
+        // Criando conteudos para testar
         Filmes filme1 = new Filmes();
-        filme1.id = 1;
-        filme1.titulo = "Interestelar";
-        filme1.anoLancamento = "2014";
-        filme1.duracaoMinutos = 169;
+        filme1.id = 1; filme1.titulo = "Interestelar";
+        filme1.anoLancamento = "2014"; filme1.duracaoMinutos = 169;
         filme1.diretor = "Christopher Nolan";
 
+        Filmes filme2 = new Filmes();
+        filme2.id = 2; filme2.titulo = "Inception";
+        filme2.anoLancamento = "2010"; filme2.duracaoMinutos = 148;
+        filme2.diretor = "Christopher Nolan";
+
         // Testando favoritos
+        Console.WriteLine("\n-- Favoritos --");
         meuPerfil.AdicionarFavorito(filme1);
         meuPerfil.AdicionarFavorito(filme1); // testa duplicata
         meuPerfil.ListarFavoritos();
 
-        Console.WriteLine("\n=== TESTE LISTAS DO PERFIL ===");
-
-        Filmes filme2 = new Filmes();
-        filme2.id = 2;
-        filme2.titulo = "Inception";
-        filme2.anoLancamento = "2010";
-        filme2.duracaoMinutos = 148;
-        filme2.diretor = "Christopher Nolan";
-
+        // Testando assistidos
+        Console.WriteLine("\n-- Assistidos --");
         meuPerfil.AdicionarAssistido(filme1);
+        meuPerfil.AdicionarAssistido(filme1); // testa duplicata
+        meuPerfil.ListarAssistidos();
+
+        // Testando quero assistir
+        Console.WriteLine("\n-- Quero Assistir --");
         meuPerfil.AdicionarQueroAssistir(filme2);
-        meuPerfil.ExibirTodasAsListas();
+        meuPerfil.ListarQueroAssistir();
+
+        // Exibindo todas as listas
+        Console.WriteLine("\n-- Todas as listas --");
+        meuPerfil.ExibirTodasAsListas(); meuPerfil.ExibirTodasAsListas();
     }
 }
