@@ -96,6 +96,37 @@ class Program
         Console.WriteLine("=== TESTE TEMPORADA ===");
         temporada1.ListarEpisodios();
 
+        Console.WriteLine();
+
+        Console.WriteLine("=== TESTE SÉRIE ===");
+
+        Series serie1 = new Series();
+        serie1.id = 1;
+        serie1.titulo = "Dark";
+        serie1.anoLancamento = "2017";
+        serie1.numTemp = 1;
+
+        serie1.temporadas.Add(temporada1);
+        serie1.ExibirDetalhes();
+
+        Console.WriteLine();
+
+        Console.WriteLine("\n=== TESTE CATEGORIA ===");
+
+        Filmes filmeCategoria1 = new Filmes();
+        filmeCategoria1.titulo = "Interestelar";
+
+        Filmes filmeCategoria2 = new Filmes();
+        filmeCategoria2.titulo = "Inception";
+
+        Categoria ficcao = new Categoria();
+        ficcao.AdicionarCategoria("Ficção Científica");
+
+        ficcao.AdicionarConteudo(filmeCategoria1);
+        ficcao.AdicionarConteudo(filmeCategoria2);
+
+        ficcao.ListarCategoria();
+
         // Criando usuario
         Console.WriteLine("\n=== TESTE USUARIO E PERFIL ===");
         Usuario usuario1 = new Usuario("Ana", "01/01/2000", "ana@email.com", "senha123");

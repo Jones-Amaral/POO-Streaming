@@ -1,24 +1,24 @@
 public class Episodio
 {
-    public int numEpisodio;
-    public string tituloEpisodio;
-    public int duracaoEpisodio;
-    public string diretorEpisodio;
+    public int numEp;
+    public string tituloEp;
+    public int duracaoEp;
+    public string diretorEp;
 
-    public void CriarEpisodio(int numEpisodio, int duracaoEpisodio, string tituloEpisodio, string diretorEpisodio)
+    public void CriarEpisodio(int numEp, int duracaoEp, string tituloEp, string diretorEp)
     {
-        this.numEpisodio = numEpisodio;
-        this.duracaoEpisodio = duracaoEpisodio;
-        this.tituloEpisodio = tituloEpisodio;
-        this.diretorEpisodio = diretorEpisodio;
+        this.numEp = numEp;
+        this.duracaoEp = duracaoEp;
+        this.tituloEp = tituloEp;
+        this.diretorEp = diretorEp;
     }
 
     public void ExibirEpisodio()
     {
-        Console.WriteLine($"Episódio {numEpisodio}");
-        Console.WriteLine($"Título: {tituloEpisodio}");
-        Console.WriteLine($"Duração: {duracaoEpisodio} min");
-        Console.WriteLine($"Diretor: {diretorEpisodio}");
+        Console.WriteLine($"Episódio {numEp}");
+        Console.WriteLine($"Título: {tituloEp}");
+        Console.WriteLine($"Duração: {duracaoEp} min");
+        Console.WriteLine($"Diretor: {diretorEp}");
         Console.WriteLine("-----------------------");
     }
 }
