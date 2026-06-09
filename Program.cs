@@ -1,4 +1,7 @@
-﻿public abstract class Conteudo
+﻿using System;
+using System.Collections.Generic;
+
+public abstract class Conteudo
 {
     public int notaConteudo;
     public int id;
@@ -77,111 +80,96 @@ class Program
 {
     static void Main()
     {
-        // Criando temporada
-        Temporada temporada1 = new Temporada();
-        temporada1.CriarTemporada(1);
-
-        // Criando episódios
-        Episodio ep1 = new Episodio();
-        ep1.CriarEpisodio(1, 45, "Piloto", "João Silva");
-
-        Episodio ep2 = new Episodio();
-        ep2.CriarEpisodio(2, 50, "O Retorno", "Maria Santos");
-
-        // Adicionando episódios na temporada
-        temporada1.AdicionarEp(ep1);
-        temporada1.AdicionarEp(ep2);
-
-        // Listando episódios
-        Console.WriteLine("=== TESTE TEMPORADA ===");
-        temporada1.ListarEpisodios();
-
-        Console.WriteLine();
-
-        Console.WriteLine("=== TESTE SÉRIE ===");
-
-        Series serie1 = new Series();
-        serie1.id = 1;
-        serie1.titulo = "Dark";
-        serie1.anoLancamento = "2017";
-        serie1.numTemp = 1;
-
-        serie1.temporadas.Add(temporada1);
-        serie1.ExibirDetalhes();
-
-        Console.WriteLine();
-
-        Console.WriteLine("\n=== TESTE CATEGORIA ===");
-
-        Filmes filmeCategoria1 = new Filmes();
-        filmeCategoria1.titulo = "Interestelar";
-
-        Filmes filmeCategoria2 = new Filmes();
-        filmeCategoria2.titulo = "Inception";
-
-        Categoria ficcao = new Categoria();
-        ficcao.AdicionarCategoria("Ficção Científica");
-
-        ficcao.AdicionarConteudo(filmeCategoria1);
-        ficcao.AdicionarConteudo(filmeCategoria2);
-
-        ficcao.ListarCategoria();
-
-        Console.WriteLine("\n=== TESTE USUARIO E PERFIL ===");
-
-        // Teste de senha curta (deve lancar excecao)
-        try
-        {
-            Usuario usuarioInvalido = new Usuario("Teste", "01/01/2000", "teste@email.com", "123");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Erro esperado: {e.Message}");
-        }
-
-        // Criando usuario valido
+        Catalogo meuCatalogo = new Catalogo();
         Usuario usuario1 = new Usuario("Ana", "01/01/2000", "ana@email.com", "senha123");
-        Console.WriteLine($"Usuario criado: {usuario1.nome}");
-
-        // Criando perfis
         usuario1.CriarPerfil("Ana");
-        usuario1.CriarPerfil("Familia");
-        usuario1.ListarPerfis();
-
-        // Pegando o primeiro perfil
         List<Perfil> perfis = usuario1.GetListaPerfis();
         Perfil meuPerfil = perfis[0];
 
-        // Criando conteudos para testar
-        Filmes filme1 = new Filmes();
-        filme1.id = 1; filme1.titulo = "Interestelar";
-        filme1.anoLancamento = "2014"; filme1.duracaoMinutos = 169;
-        filme1.diretor = "Christopher Nolan";
+        Temporada temporada1 = new Temporada();
+        temporada1.CriarTemporada(1);
+        Episodio ep1 = new Episodio();
+        ep1.CriarEpisodio(1, 45, "Piloto", "João Silva");
+        Episodio ep2 = new Episodio();
+        ep2.CriarEpisodio(2, 50, "O Retorno", "Maria Santos");
+        temporada1.AdicionarEp(ep1);
+        temporada1.AdicionarEp(ep2);
 
-        Filmes filme2 = new Filmes();
-        filme2.id = 2; filme2.titulo = "Inception";
-        filme2.anoLancamento = "2010"; filme2.duracaoMinutos = 148;
-        filme2.diretor = "Christopher Nolan";
+        bool rodando = true;
+        while (rodando)
+        {
+            Console.WriteLine("\n=== MENU STREAMING ===");
+            Console.WriteLine("1. Listar Filmes");
+            Console.WriteLine("2. Listar Séries");
+            Console.WriteLine("3. Adicionar Filme");
+            Console.WriteLine("4. Adicionar Série");
+            Console.WriteLine("5. Executar Testes Automáticos");
+            Console.WriteLine("6. Sair");
+            Console.Write("Opção: ");
+            string opcao = Console.ReadLine();
 
-        // Testando favoritos
-        Console.WriteLine("\n-- Favoritos --");
-        meuPerfil.AdicionarFavorito(filme1);
-        meuPerfil.AdicionarFavorito(filme1); // testa duplicata
-        meuPerfil.ListarFavoritos();
+            try
+            {
+                switch (opcao)
+                {
+                    case "1":
+                        meuCatalogo.ListarFilmes();
+                        break;
+                    case "2":
+                        meuCatalogo.ListarSeries();
+                        break;
+                    case "3":
+                        Console.Write("ID: "); int idF = int.Parse(Console.ReadLine());
+                        Console.Write("Título: "); string tF = Console.ReadLine();
+                        Console.Write("Ano: "); string anoF = Console.ReadLine();
+                        Console.Write("Diretor: "); string dirF = Console.ReadLine();
+                        Console.Write("Duração: "); int durF = int.Parse(Console.ReadLine());
+                        Console.Write("Nota: "); int notaF = int.Parse(Console.ReadLine());
+                        Console.Write("Classificação: "); int classF = int.Parse(Console.ReadLine());
+                        Console.Write("Sinopse: "); string sinF = Console.ReadLine();
+                        meuCatalogo.AdicionarFilme(idF, notaF, classF, anoF, tF, sinF, durF, dirF);
+                        break;
+                    case "4":
+                        Console.Write("ID: "); int idS = int.Parse(Console.ReadLine());
+                        Console.Write("Título: "); string tS = Console.ReadLine();
+                        Console.Write("Ano: "); string anoS = Console.ReadLine();
+                        Console.Write("Temporadas: "); int tempS = int.Parse(Console.ReadLine());
+                        Console.Write("Duração Ep: "); int durS = int.Parse(Console.ReadLine());
+                        Console.Write("Nota: "); int notaS = int.Parse(Console.ReadLine());
+                        Console.Write("Classificação: "); int classS = int.Parse(Console.ReadLine());
+                        Console.Write("Sinopse: "); string sinS = Console.ReadLine();
+                        meuCatalogo.AdicionarSerie(idS, notaS, classS, anoS, tS, sinS, durS, tempS);
+                        break;
+                    case "5":
+                        Console.WriteLine("\n=== EXECUTANDO TESTES ===");
+                        temporada1.ListarEpisodios();
+                        Series s1 = new Series { id = 1, titulo = "Dark", anoLancamento = "2017", numTemp = 1 };
+                        s1.temporadas.Add(temporada1);
+                        s1.ExibirDetalhes();
 
-        // Testando assistidos
-        Console.WriteLine("\n-- Assistidos --");
-        meuPerfil.AdicionarAssistido(filme1);
-        meuPerfil.AdicionarAssistido(filme1); // testa duplicata
-        meuPerfil.ListarAssistidos();
+                        try { Usuario uInvalido = new Usuario("Teste", "01/01/2000", "t@em.com", "123"); }
+                        catch (Exception e) { Console.WriteLine($"Erro esperado: {e.Message}"); }
 
-        // Testando quero assistir
-        Console.WriteLine("\n-- Quero Assistir --");
-        meuPerfil.AdicionarQueroAssistir(filme2);
-        meuPerfil.ListarQueroAssistir();
-
-        // Exibindo todas as listas
-        Console.WriteLine("\n-- Todas as listas --");
-        meuPerfil.ExibirTodasAsListas(); meuPerfil.ExibirTodasAsListas();
+                        Filmes f1 = new Filmes { id = 1, titulo = "Interestelar", anoLancamento = "2014", duracaoMinutos = 169, diretor = "C. Nolan" };
+                        meuPerfil.AdicionarFavorito(f1);
+                        meuPerfil.ListarFavoritos();
+                        break;
+                    case "6":
+                        rodando = false;
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida.");
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Erro: Entrada com formato incorreto. Digite números onde solicitado.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro no sistema: {ex.Message}");
+            }
+        }
     }
 }
